@@ -23,7 +23,11 @@ server.listen(3000, '192.168.100.5' || 'localhost', function() {
 });
 
 app.get('/', (req,res) => {
-    res.send('Ruta raiz del backend');
+    res.send('Ruta raiz de la API');
+});
+
+app.get('/test', (req,res) => {
+    res.send('Esta es la ruta TEST');
 });
 
 // ERROR HANDLER

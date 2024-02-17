@@ -1,0 +1,87 @@
+DROP TABLE IF EXISTS roles CASCADE;
+CREATE TABLE roles(
+    id BIGSERIAL PRIMARY KEY,
+    rol VARCHAR(255) NOT NULL UNIQUE
+);
+
+DROP TABLE IF EXISTS usuarios CASCADE;
+CREATE TABLE usuarios(
+	id BIGSERIAL PRIMARY KEY,
+	usuario VARCHAR(255) NOT NULL UNIQUE,
+	email VARCHAR(255) NOT NULL UNIQUE,
+	contrasena VARCHAR(255) NOT NULL,
+	rol BIGSERIAL NOT NULL,
+	session_token VARCHAR(255) NULL,
+	created_at TIMESTAMP(0) NOT NULL,
+	updated_at TIMESTAMP(0) NOT NULL,
+    FOREIGN KEY (rol) REFERENCES roles(id) ON UPDATE CASCADE
+);
+
+DROP TABLE IF EXISTS proyectos CASCADE;
+CREATE TABLE proyectos(
+    id BIGSERIAL PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    descripcion VARCHAR(255) NOT NULL,
+    fecha_inicio DATE,
+    id_gerente BIGSERIAL,
+    FOREIGN KEY (id_gerente) REFERENCES usuarios(id) ON UPDATE CASCADE
+);
+
+DROP TABLE IF EXISTS usuarios_proyectos CASCADE;
+CREATE TABLE usuarios_proyectos(
+    id_usuario BIGSERIAL NOT NULL,
+    id_proyecto BIGSERIAL NOT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON UPDATE CASCADE,
+    FOREIGN KEY (id_proyecto) REFERENCES proyectos(id) ON UPDATE CASCADE
+);
+
+DROP TABLE IF EXISTS estados CASCADE;
+CREATE TABLE estados(
+    id BIGSERIAL PRIMARY KEY,
+    estado VARCHAR(255) NOT NULL UNIQUE
+);
+
+
+DROP TABLE IF EXISTS historias_usuarios CASCADE;
+CREATE TABLE historias_usuarios(
+    id BIGSERIAL PRIMARY KEY,
+    detalles VARCHAR(255) NOT NULL,
+    criterios VARCHAR(255) NOT NULL,
+    proyecto BIGSERIAL NOT NULL,
+    estado BIGSERIAL NOT NULL,
+    FOREIGN KEY (proyecto) REFERENCES proyectos(id) ON UPDATE CASCADE,
+    FOREIGN KEY (estado) REFERENCES estados(id) ON UPDATE CASCADE
+);
+
+DROP TABLE IF EXISTS estados_historias CASCADE;
+CREATE TABLE estados_historias(
+    id BIGSERIAL PRIMARY KEY,
+    hora_actulizacion TIMESTAMP(0) NOT NULL,
+    estado BIGSERIAL NOT NULL,
+    historia BIGSERIAL NOT NULL,
+    FOREIGN KEY (estado) REFERENCES estados(id) ON UPDATE CASCADE,
+    FOREIGN KEY (historia) REFERENCES historias_usuarios(id) ON UPDATE CASCADE
+);
+
+DROP TABLE IF EXISTS tareas CASCADE;
+CREATE TABLE tareas(
+    id BIGSERIAL PRIMARY KEY,
+    tarea VARCHAR(255) NOT NULL,
+    descripcion VARCHAR(255) NOT NULL,
+    estado BIGSERIAL NOT NULL,
+    historia BIGSERIAL NOT NULL,
+    FOREIGN KEY (estado) REFERENCES estados(id) ON UPDATE CASCADE,
+    FOREIGN KEY (historia) REFERENCES historias_usuarios(id) ON UPDATE CASCADE
+);
+
+
+DROP TABLE IF EXISTS estados_tareas CASCADE;
+CREATE TABLE estados_tareas(
+    id BIGSERIAL PRIMARY KEY,
+    gerente BIGSERIAL NOT NULL,
+    hora_actulizacion TIMESTAMP(0) NOT NULL,
+    estado BIGSERIAL NOT NULL,
+    tarea BIGSERIAL NOT NULL,
+    FOREIGN KEY (estado) REFERENCES estados(id) ON UPDATE CASCADE,
+    FOREIGN KEY (tarea) REFERENCES tareas(id) ON UPDATE CASCADE
+);
