@@ -4,12 +4,12 @@ CREATE TABLE roles(
     rol VARCHAR(255) NOT NULL UNIQUE
 );
 
-DROP TABLE IF EXISTS usuarios CASCADE;
-CREATE TABLE usuarios(
+DROP TABLE IF EXISTS users CASCADE;
+CREATE TABLE users(
 	id BIGSERIAL PRIMARY KEY,
-	usuario VARCHAR(255) NOT NULL UNIQUE,
+	user VARCHAR(255) NOT NULL UNIQUE,
 	email VARCHAR(255) NOT NULL UNIQUE,
-	contrasena VARCHAR(255) NOT NULL,
+	password VARCHAR(255) NOT NULL,
 	rol BIGSERIAL NOT NULL,
 	session_token VARCHAR(255) NULL,
 	created_at TIMESTAMP(0) NOT NULL,
@@ -17,71 +17,115 @@ CREATE TABLE usuarios(
     FOREIGN KEY (rol) REFERENCES roles(id) ON UPDATE CASCADE
 );
 
-DROP TABLE IF EXISTS proyectos CASCADE;
-CREATE TABLE proyectos(
+DROP TABLE IF EXISTS states CASCADE;
+CREATE TABLE states(
     id BIGSERIAL PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
-    descripcion VARCHAR(255) NOT NULL,
-    fecha_inicio DATE,
-    id_gerente BIGSERIAL,
-    FOREIGN KEY (id_gerente) REFERENCES usuarios(id) ON UPDATE CASCADE
+    estate VARCHAR(255) NOT NULL UNIQUE
 );
 
-DROP TABLE IF EXISTS usuarios_proyectos CASCADE;
-CREATE TABLE usuarios_proyectos(
-    id_usuario BIGSERIAL NOT NULL,
-    id_proyecto BIGSERIAL NOT NULL,
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON UPDATE CASCADE,
-    FOREIGN KEY (id_proyecto) REFERENCES proyectos(id) ON UPDATE CASCADE
+DROP TABLE IF EXISTS projects CASCADE;
+CREATE TABLE projects(
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    start_date DATE,
+    state_id BIGSERIAL,
+    created_by_id BIGSERIAL,
+    FOREIGN KEY (created_by_id) REFERENCES users(id) ON UPDATE CASCADE,
+    FOREIGN KEY (state_id) REFERENCES states(id) ON UPDATE CASCADE
 );
 
-DROP TABLE IF EXISTS estados CASCADE;
-CREATE TABLE estados(
+DROP TABLE IF EXISTS project_assigment CASCADE;
+CREATE TABLE project_assigment(
     id BIGSERIAL PRIMARY KEY,
-    estado VARCHAR(255) NOT NULL UNIQUE
-);
-
-
-DROP TABLE IF EXISTS historias_usuarios CASCADE;
-CREATE TABLE historias_usuarios(
-    id BIGSERIAL PRIMARY KEY,
-    detalles VARCHAR(255) NOT NULL,
-    criterios VARCHAR(255) NOT NULL,
-    proyecto BIGSERIAL NOT NULL,
-    estado BIGSERIAL NOT NULL,
-    FOREIGN KEY (proyecto) REFERENCES proyectos(id) ON UPDATE CASCADE,
-    FOREIGN KEY (estado) REFERENCES estados(id) ON UPDATE CASCADE
-);
-
-DROP TABLE IF EXISTS estados_historias CASCADE;
-CREATE TABLE estados_historias(
-    id BIGSERIAL PRIMARY KEY,
-    hora_actulizacion TIMESTAMP(0) NOT NULL,
-    estado BIGSERIAL NOT NULL,
-    historia BIGSERIAL NOT NULL,
-    FOREIGN KEY (estado) REFERENCES estados(id) ON UPDATE CASCADE,
-    FOREIGN KEY (historia) REFERENCES historias_usuarios(id) ON UPDATE CASCADE
-);
-
-DROP TABLE IF EXISTS tareas CASCADE;
-CREATE TABLE tareas(
-    id BIGSERIAL PRIMARY KEY,
-    tarea VARCHAR(255) NOT NULL,
-    descripcion VARCHAR(255) NOT NULL,
-    estado BIGSERIAL NOT NULL,
-    historia BIGSERIAL NOT NULL,
-    FOREIGN KEY (estado) REFERENCES estados(id) ON UPDATE CASCADE,
-    FOREIGN KEY (historia) REFERENCES historias_usuarios(id) ON UPDATE CASCADE
+    user_id BIGSERIAL NOT NULL,
+    project_id BIGSERIAL NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE,
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON UPDATE CASCADE
 );
 
 
-DROP TABLE IF EXISTS estados_tareas CASCADE;
-CREATE TABLE estados_tareas(
+DROP TABLE IF EXISTS user_histories CASCADE;
+CREATE TABLE user_histories(
     id BIGSERIAL PRIMARY KEY,
-    gerente BIGSERIAL NOT NULL,
-    hora_actulizacion TIMESTAMP(0) NOT NULL,
-    estado BIGSERIAL NOT NULL,
-    tarea BIGSERIAL NOT NULL,
-    FOREIGN KEY (estado) REFERENCES estados(id) ON UPDATE CASCADE,
-    FOREIGN KEY (tarea) REFERENCES tareas(id) ON UPDATE CASCADE
+    description TEXT NOT NULL,
+    criteria TEXT NOT NULL,
+    project_id BIGSERIAL NOT NULL,
+    state_id BIGSERIAL NOT NULL,
+    created_by_id BIGSERIAL NOT NULL,
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON UPDATE CASCADE,
+    FOREIGN KEY (state_id) REFERENCES states(id) ON UPDATE CASCADE,
+    FOREIGN KEY (created_by_id) REFERENCES users(id) ON UPDATE CASCADE
+);
+
+DROP TABLE IF EXISTS user_histories_assignment CASCADE;
+CREATE TABLE user_histories_assignment(
+    id BIGSERIAL PRIMARY KEY,
+    user_history_id BIGSERIAL NOT NULL,
+    user_id BIGSERIAL,
+    FOREIGN KEY (user_history_id) REFERENCES user_histories(id) ON UPDATE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE
+);
+
+DROP TABLE IF EXISTS tasks CASCADE;
+CREATE TABLE tasks(
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    user_history_id BIGSERIAL NOT NULL,
+    state_id BIGSERIAL NOT NULL,
+    create_by_id BIGSERIAL NOT NULL,
+    FOREIGN KEY (state_id) REFERENCES states(id) ON UPDATE CASCADE,
+    FOREIGN KEY (user_history_id) REFERENCES user_histories(id) ON UPDATE CASCADE,
+    FOREIGN KEY (create_by_id) REFERENCES users(id)
+);
+
+
+DROP TABLE IF EXISTS task_assignment CASCADE;
+CREATE TABLE task_assignment(
+    id BIGSERIAL PRIMARY KEY,
+    task_id BIGSERIAL NOT NULL,
+    user_id BIGSERIAL NOT NULL,
+    FOREIGN KEY (task_id) REFERENCES task(id) ON UPDATE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE
+);
+
+DROP TABLE IF EXISTS change_tracking_task CASCADE;
+CREATE TABLE change_tracking_task(
+    id BIGSERIAL PRIMARY KEY,
+    change_date DATE,
+    task_id BIGSERIAL NOT NULL,
+    changed_by_id BIGSERIAL NOT NULL,
+    FOREIGN KEY (changed_by_id) REFERENCES users(id) ON UPDATE CASCADE,
+    FOREIGN KEY (task_id) REFERENCES tasks(id) ON UPDATE CASCADE
+);
+
+DROP TABLE IF EXISTS change_tracking_history CASCADE;
+CREATE TABLE change_tracking_history(
+    id BIGSERIAL PRIMARY KEY, 
+    change_date DATE,
+    user_histoy_id BIGSERIAL NOT NULL,
+    changed_by_id BIGSERIAL NOT NULL,
+    FOREIGN KEY (changed_by_id) REFERENCES users(id) ON UPDATE CASCADE,
+    FOREIGN KEY (user_history_id) REFERENCES user_histories(id) ON UPDATE CASCADE
+);
+
+INSERT INTO roles(rol) VALUES('Gerente');
+INSERT INTO roles(rol) VALUES('Desarrollador');
+
+INSERT INTO usuarios(
+	usuario,
+	email,
+	contrasena,
+	created_at,
+	updated_at,
+	rol
+)
+VALUES(
+	'Junior Jurado',
+	'juniorjurado2004@gmail.com',
+	'123',
+	'2024-02-17',
+	'2024-02-17',
+	1
 );

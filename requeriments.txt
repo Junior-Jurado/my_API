@@ -2,3 +2,9 @@ express
 http
 cors
 morgan
+pg-promise
+bluebird
+bcryptjs
+passport-jwt
+passport
+jsonwebtoken

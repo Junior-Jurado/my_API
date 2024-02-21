@@ -1,0 +1,3 @@
+module.exports = {
+    secretOrKey: '4*3E9agjolsf-.a*jo}q\'F7712A8C615B247232230C743092798B768977258244112764161794543D'
+}
