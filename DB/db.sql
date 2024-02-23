@@ -7,7 +7,7 @@ CREATE TABLE roles(
 DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users(
 	id BIGSERIAL PRIMARY KEY,
-	user VARCHAR(255) NOT NULL UNIQUE,
+	user_name VARCHAR(255) NOT NULL UNIQUE,
 	email VARCHAR(255) NOT NULL UNIQUE,
 	password VARCHAR(255) NOT NULL,
 	rol BIGSERIAL NOT NULL,
@@ -86,7 +86,7 @@ CREATE TABLE task_assignment(
     id BIGSERIAL PRIMARY KEY,
     task_id BIGSERIAL NOT NULL,
     user_id BIGSERIAL NOT NULL,
-    FOREIGN KEY (task_id) REFERENCES task(id) ON UPDATE CASCADE,
+    FOREIGN KEY (task_id) REFERENCES tasks(id) ON UPDATE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE
 );
 
@@ -107,7 +107,7 @@ CREATE TABLE change_tracking_history(
     user_histoy_id BIGSERIAL NOT NULL,
     changed_by_id BIGSERIAL NOT NULL,
     FOREIGN KEY (changed_by_id) REFERENCES users(id) ON UPDATE CASCADE,
-    FOREIGN KEY (user_history_id) REFERENCES user_histories(id) ON UPDATE CASCADE
+    FOREIGN KEY (user_histoy_id) REFERENCES user_histories(id) ON UPDATE CASCADE
 );
 
 INSERT INTO roles(rol) VALUES('Gerente');

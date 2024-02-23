@@ -31,7 +31,8 @@ app.set('port', port);
 // Llamando a las rutas
 users(app);
 
-server.listen(3000, '192.168.100.5' || 'localhost', function() {
+
+server.listen(3000, '10.31.14.139' || 'localhost', function() {
     console.log("API projects " + process.pid + " iniciada ...\nEn el puerto " + port)
 });
 

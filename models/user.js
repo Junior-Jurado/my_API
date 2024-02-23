@@ -9,7 +9,7 @@ User.getAll = () =>{
     SELECT 
         *
     FROM 
-        usuarios
+        users
     `;
 
     return db.manyOrNone(sql);
@@ -17,14 +17,14 @@ User.getAll = () =>{
 
 User.create = async (user) => {
 
-    const hash = await bcrypt.hash(user.contrasena, 10);
+    const hash = await bcrypt.hash(user.password, 10);
 
     const sql = `
     INSERT INTO 
-        usuarios(
-            usuario,
+        users(
+            user_name,
             email,
-            contrasena,
+            password,
             rol,
             created_at,
             updated_at
@@ -33,7 +33,7 @@ User.create = async (user) => {
     `;
 
     return db.oneOrNone(sql,[
-        user.usuario,
+        user.user_name,
         user.email,
         hash,
         user.rol,
@@ -46,45 +46,29 @@ User.findByEmail = (email) => {
     const sql = `
     SELECT 
         id,
-        usuario,
+        user_name,
         email,
-        contrasena,
+        password,
         rol,
         session_token
     FROM 
-        usuarios
+        users
     WHERE 
-        email = $1
+        email = $1 OR user_name = $1
     `;
     return db.oneOrNone(sql, email);
-}
-
-User.findByUser = (usuario) => {
-    const sql = `
-    SELECT 
-        usuario,
-        email,
-        contrasena,
-        rol,
-        session_token
-    FROM 
-        usuarios
-    WHERE 
-        usuario = $1
-    `;
-    return db.oneOrNone(sql, usuario);
 }
 
 User.findById = (id, callback) => {
     const sql = `
     SELECT 
-        usuario,
+        user_name,
         email,
-        contrasena,
+        password,
         rol,
         session_token
     FROM 
-        usuarios
+        users
     WHERE 
         id = $1
     `;

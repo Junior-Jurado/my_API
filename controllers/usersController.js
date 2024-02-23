@@ -1,4 +1,4 @@
-const User = require('../models/usuario')
+const User = require('../models/user')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../config/keys');
@@ -30,60 +30,73 @@ module.exports = {
             });
         } catch (error) {
             console.log(`Error: ${error}`);
-            return res.status(501).json({
-                success: false,
-                message: 'Hubo un error al registrar al usuario',
-                error: error
-            });
+            if (error.code === '23505') {
+                if (error.constraint === 'users_user_name_key') {
+                    // Si el error es debido a que el nombre de usuario ya existe, devuelve un mensaje al usuario
+                    return res.status(400).json({ success: false, message: 'El nombre de usuario ya está en uso', error:error });
+                } else if (error.constraint === 'users_email_key') {
+                    // Si el error es debido a que el correo electrónico ya existe, devuelve un mensaje al usuario
+                    return res.status(400).json({ success: false, message: 'El correo electrónico ya está en uso', error:error });
+                }
+            } else {
+                // Si el error no se debe a la violación de la restricción de unicidad, devuelve un mensaje genérico de error
+                console.error('Error al crear el usuario:', error);
+                return res.status(500).json({ success: false, message: 'Hubo un error al registrar al usuario', error: error });
+            }
+
+            
+            
         }
     },
 
     async login(req, res, next) {
         try {
-            //const user = req.body.usuario;
+            
             const email = req.body.email;
-            const password = req.body.contrasena;
+            const password = req.body.password;
 
-            const myUserE = await User.findByEmail(email);
 
-            if(!myUserE) {
+            const myUser = await User.findByEmail(email);
+
+            if(!myUser) {
                 return res.status(401).json({
                     success: false,
                     message: 'Las credenciales son incorrectas'
                 })
             }
+
+            if (myUser) {
+                const isPasswordValid = await bcrypt.compare(password, myUser.password);
             
-            const isPasswordValid = await bcrypt.compare(password, myUserE.contrasena);
+                if (isPasswordValid) {
+                    const token = jwt.sign({id: myUser.id, email: myUser.email},
+                        keys.secretOrKey, {
+                        //expiresIn
+                    })
+                    
+
+                    const data = {
+                        id: myUser.id,
+                        usuario: myUser.user_name,
+                        email: myUser.email,
+                        rol: myUser.rol,
+                        session_token: `JWT ${token}`
+                    };
+
+                        
+                    return res.status(201).json({
+                        success: true,
+                        message: 'El usuario ha sido autenticado',
+                        data: data
+                    });
+                }
             
-            if (isPasswordValid) {
-                const token = jwt.sign({id: myUserE.id, email: myUserE.email},
-                    keys.secretOrKey, {
-                    //expiresIn
-                })
-                
-
-                const data = {
-                    id: myUserE.id,
-                    usuario: myUserE.usuario,
-                    email: myUserE.email,
-                    rol: myUserE.rol,
-                    session_token: `JWT ${token}`
-                };
-
-                
-                return res.status(201).json({
-                    success: true,
-                    message: 'El usuario ha sido autenticado',
-                    data: data
-                });
-
             } else {
                 return res.status(401).json({
                     success: false,
                     message: 'La contraseña es incorrecta'
                 });
             }
-            
 
         } catch (error) {
             console.log(`Error: ${error}`);
