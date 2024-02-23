@@ -1,15 +1,19 @@
 const Project = require('../models/project')
-
+const User = require('../models/user')
 
 module.exports = {
     async create(req, res, next) {
         try {
             const project = req.body;
-            console.log('Project', project);
+            const id = project.create_by_id
+            const user = await User.findByIdPerRol(id)            
+            
 
-            const data = await Project.create(project);
+            if (user['rol'] == 1) {
+                console.log('Project', project);
 
-            if (data != null) {
+                const data = await Project.create(project);
+
                 return res.status(201).json({
                     success: true,
                     message: 'El projecto ha sido creado correctamente!',

@@ -59,6 +59,18 @@ User.findByEmail = (email) => {
     return db.oneOrNone(sql, email);
 }
 
+User.findByIdPerRol = (id) => {
+    const sql = `
+    SELECT 
+        *
+    FROM 
+        users
+    WHERE 
+        id = $1
+    `;
+    return db.oneOrNone(sql, id);
+}
+
 User.findById = (id, callback) => {
     const sql = `
     SELECT 
