@@ -113,6 +113,12 @@ CREATE TABLE change_tracking_history(
 INSERT INTO roles(rol) VALUES('Gerente');
 INSERT INTO roles(rol) VALUES('Desarrollador');
 
+
+INSERT INTO states(estate) VALUES('Nueva');
+INSERT INTO states(estate) VALUES('En desarrollo');
+INSERT INTO states(estate) VALUES('Finalizada');
+
+
 INSERT INTO usuarios(
 	usuario,
 	email,

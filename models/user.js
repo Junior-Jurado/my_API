@@ -75,4 +75,20 @@ User.findById = (id, callback) => {
     return db.oneOrNone(sql, id).then(user => { callback(null,user) });
 }
 
+User.updateSessionToken = (id_user, session_token) => {
+    const sql = `
+    UPDATE
+        users
+    SET 
+        session_token = $2
+    WHERE
+        id = $1
+    `;
+    return db.none(sql, [
+        id_user,
+        session_token
+    ]);
+
+}
+
 module.exports = User;

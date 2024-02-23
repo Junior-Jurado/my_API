@@ -2,25 +2,32 @@ const Project = require('../models/project')
 
 
 module.exports = {
-    async createProject(req, res, next) {
+    async create(req, res, next) {
         try {
             const project = req.body;
-            const create_by = req.body.create_by_id
+            console.log('Project', project);
 
-            if (create_by == 1) {
-                const data = await Project.create(project);
+            const data = await Project.create(project);
 
+            if (data != null) {
                 return res.status(201).json({
                     success: true,
                     message: 'El projecto ha sido creado correctamente!',
-                    data: data.id
+                    data: {
+                        'id': data.id
+                    }
                 });
-            } else {
+                  
+            } else{
                 return res.status(401).json({
-                    success: false,
-                    message: 'No puedes crear projectos porque no eres gerente'
-                })
+                    success: true,
+                    message: 'No eres gerente, no puedes crear un proyecto!',
+                });
             }
+
+            
+              
+            
 
             
         } catch (error) {

@@ -21,12 +21,27 @@ module.exports = {
     async register(req, res, next) {
         try {
             const user = req.body;
+            console.log(user)
             const data = await User.create(user);
+
+            const token = jwt.sign({id: data.id, email: user.email},
+                keys.secretOrKey, {
+                //expiresIn
+            })
+            
+
+            const myData = {
+                id: data.id,
+                usuario: user.user_name,
+                email: user.email,
+                rol: user.rol,
+                session_token: `JWT ${token}`
+            };
 
             return res.status(201).json({
                 success: true,
                 message: 'El registro se realizo correctamente!!',
-                data: data.id
+                data: myData
             });
         } catch (error) {
             console.log(`Error: ${error}`);
@@ -43,9 +58,6 @@ module.exports = {
                 console.error('Error al crear el usuario:', error);
                 return res.status(500).json({ success: false, message: 'Hubo un error al registrar al usuario', error: error });
             }
-
-            
-            
         }
     },
 
@@ -57,6 +69,7 @@ module.exports = {
 
 
             const myUser = await User.findByEmail(email);
+            console.log(req.body)
 
             if(!myUser) {
                 return res.status(401).json({
@@ -83,6 +96,7 @@ module.exports = {
                         session_token: `JWT ${token}`
                     };
 
+                    await User.updateSessionToken(myUser.id, `JWT ${token}`);
                         
                     return res.status(201).json({
                         success: true,

@@ -10,6 +10,7 @@ const passport = require('passport')
 * RUTAS
 */
 const users = require('./routes/userRoutes');
+const projects = require('./routes/projectRoutes');
 
 const port  = process.env.PORT || 3000;
 
@@ -30,6 +31,7 @@ app.set('port', port);
 
 // Llamando a las rutas
 users(app);
+projects(app);
 
 
 server.listen(3000, '10.31.14.139' || 'localhost', function() {
