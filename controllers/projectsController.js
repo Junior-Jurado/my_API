@@ -55,9 +55,14 @@ module.exports = {
                     success: false,
                     message: 'El desarrollador no existe!'
                 });
-            } else {
+            }else if (user['rol'] == 1){
+                return res.status(401).json({
+                    success: false,
+                    message: 'No puedes añadir otro gerente al proyecto!'
+                });
+            }else {
                 const existe = await Project.search_assignment(user['id'], project['id']);
-                console.log(existe)
+                
                 if (existe != null) {
                     return res.status(401).json({
                         success: false,
@@ -99,6 +104,55 @@ module.exports = {
                     message: 'El desarrollador no pertenece al proyecto'
                 });
             }
+            
+        } catch (error) {
+            console.log(`Error: ${error}`);
+            return res.status(501).json({
+                success: false,
+                message: 'Error al crear el projecto',
+                error: error
+            });
+        }
+    },
+
+    async viewProjects(req, res, next) {
+        try {
+            // Desarrolladores 
+            const id = req.params.id
+            console.log(id)
+
+            const myProjectsG = await Project.view_project_gerente(id);
+            console.log(myProjectsG)
+            if (myProjectsG.length != 0){
+                myProjectsG.forEach((project, indice) => {
+                    console.log('Projecto ' + (indice+1) + ': ' + project.name)
+                })
+    
+                return res.status(201).json({
+                    success: true,
+                    message: 'Vista de proyecto abierta!',
+                    project: myProjectsG
+                });
+            } 
+            const myProjectsD = await Project.view_project_developer(id)
+
+            if (myProjectsD.length != 0){
+                myProjectsD.forEach((project, indice) => {
+                    console.log('Projecto ' + (indice+1) + ': ' + project.name)
+                })
+    
+                return res.status(201).json({
+                    success: true,
+                    message: 'Vista de proyecto abierta!',
+                    project: myProjectsD
+                });
+            }else {
+                return res.status(401).json({
+                    success: false,
+                    message: 'El usuario no tiene proyectos!'
+                });
+            }
+
             
         } catch (error) {
             console.log(`Error: ${error}`);

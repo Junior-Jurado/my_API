@@ -64,6 +64,31 @@ Project.search_assignment = (user_id, project_id) => {
     `;
     return db.oneOrNone(sql, [user_id, project_id]);
 }
+
+
+Project.view_project_developer = (user_id) => {
+    const sql = `
+        SELECT p.name
+        FROM users u
+        INNER JOIN project_assigment pa
+        ON u.id = pa.user_id
+        INNER JOIN projects p
+        ON pa.project_id = p.id
+        WHERE u.id = $1 
+    `;
+    return db.manyOrNone(sql, user_id);
+}
+
+Project.view_project_gerente = (user_id) => {
+    const sql = `
+        SELECT p.name
+        FROM users u
+        INNER JOIN projects p
+        ON u.id = p.created_by_id
+        WHERE u.id = $1; 
+    `;
+    return db.manyOrNone(sql, user_id);
+}
 /*Project.create = async (project) => {
     const sql = `
     INSERT INTO
