@@ -21,7 +21,6 @@ module.exports = {
     async register(req, res, next) {
         try {
             const user = req.body;
-            console.log(user)
             const data = await User.create(user);
 
             const token = jwt.sign({id: data.id, email: user.email},

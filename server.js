@@ -11,6 +11,8 @@ const passport = require('passport')
 */
 const users = require('./routes/userRoutes');
 const projects = require('./routes/projectRoutes');
+const userHistories = require('./routes/userHistoryRoutes')
+const tasks = require('./routes/taskRoutes');
 
 const port  = process.env.PORT || 3000;
 
@@ -32,9 +34,10 @@ app.set('port', port);
 // Llamando a las rutas
 users(app);
 projects(app);
+userHistories(app);
+tasks(app);
 
-
-server.listen(3000, '10.31.14.139' || 'localhost', function() {
+server.listen(3000, '192.168.100.4' || 'localhost', function() {
     console.log("API projects " + process.pid + " iniciada ...\nEn el puerto " + port)
 });
 

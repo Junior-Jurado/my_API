@@ -93,7 +93,7 @@ CREATE TABLE task_assignment(
 DROP TABLE IF EXISTS change_tracking_task CASCADE;
 CREATE TABLE change_tracking_task(
     id BIGSERIAL PRIMARY KEY,
-    change_date DATE,
+    change_date TIMESTAMP(0) NOT NULL,
     task_id BIGSERIAL NOT NULL,
     changed_by_id BIGSERIAL NOT NULL,
     FOREIGN KEY (changed_by_id) REFERENCES users(id) ON UPDATE CASCADE,
@@ -103,7 +103,7 @@ CREATE TABLE change_tracking_task(
 DROP TABLE IF EXISTS change_tracking_history CASCADE;
 CREATE TABLE change_tracking_history(
     id BIGSERIAL PRIMARY KEY, 
-    change_date DATE,
+    change_date TIMESTAMP(0) NOT NULL,
     user_histoy_id BIGSERIAL NOT NULL,
     changed_by_id BIGSERIAL NOT NULL,
     FOREIGN KEY (changed_by_id) REFERENCES users(id) ON UPDATE CASCADE,
