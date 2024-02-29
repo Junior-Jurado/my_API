@@ -1,7 +1,14 @@
 const db = require('../config/config')
 
+// Objeto Task que maneja las operaciones relacionadas con tareas en la base de datos
 const Task = {};
 
+/**
+ * Crea una nueva tarea en la base de datos.
+ * @param {Object} Task - Objeto que contiene los datos de la tarea a crear.
+ * @param {Object} History - Objeto que contiene los datos de historial asociados a la tarea.
+ * @returns {Promise} Promesa que se resuelve con el ID de la tarea creada.
+ */
 Task.create = async(Task, History) => {
     const sql = `
     INSERT INTO
@@ -24,6 +31,11 @@ Task.create = async(Task, History) => {
     ]);
 }
 
+/**
+ * Busca una tarea por su ID en la base de datos.
+ * @param {number} id - ID de la tarea a buscar.
+ * @returns {Promise} Promesa que se resuelve con los datos de la tarea encontrada, o null si no se encuentra.
+ */
 Task.search = async (id) => {
     const sql = `
         SELECT 
@@ -36,6 +48,11 @@ Task.search = async (id) => {
     return db.oneOrNone(sql, id);
 }
 
+/**
+ * Busca todas las tareas asociadas a un historial de usuario en la base de datos.
+ * @param {number} id - ID del historial de usuario.
+ * @returns {Promise} Promesa que se resuelve con un array de objetos que representan las tareas encontradas.
+ */
 Task.searchHistory = async (id) => {
     const sql = `
         SELECT 
@@ -48,6 +65,11 @@ Task.searchHistory = async (id) => {
     return db.manyOrNone(sql, id);
 }
 
+/**
+ * Actualiza una tarea en la base de datos.
+ * @param {Object} Task - Objeto que contiene los datos de la tarea a actualizar.
+ * @returns {Promise} Promesa que indica la finalización de la operación.
+ */
 Task.update = async(Task) => {
     const sql = `
         UPDATE tasks
@@ -66,6 +88,12 @@ Task.update = async(Task) => {
     ]);
 }
 
+/**
+ * Busca una asignación de tarea por ID de tarea y ID de usuario en la base de datos.
+ * @param {number} task - ID de la tarea.
+ * @param {number} user - ID del usuario.
+ * @returns {Promise} Promesa que se resuelve con los datos de la asignación de tarea encontrada, o null si no se encuentra.
+ */
 Task.searchUserTask = async (task, user) => {
     const sql = `
         SELECT 
@@ -78,6 +106,12 @@ Task.searchUserTask = async (task, user) => {
     return db.oneOrNone(sql, [task, user]);
 }
 
+/**
+ * Busca el gerente de una tarea en la base de datos.
+ * @param {number} task - ID de la tarea.
+ * @param {number} user - ID del usuario (gerente).
+ * @returns {Promise} Promesa que se resuelve con los datos del gerente de la tarea encontrada, o null si no se encuentra.
+ */
 Task.searchManager = async (task, user) => {
     const sql = `
         SELECT 
@@ -96,6 +130,11 @@ Task.searchManager = async (task, user) => {
     ]);
 }
 
+/**
+ * Elimina una tarea de la base de datos.
+ * @param {number} task - ID de la tarea a eliminar.
+ * @returns {Promise} Promesa que indica la finalización de la operación.
+ */
 Task.delete = (task) => {
     const sql = `
         DELETE 
@@ -105,6 +144,11 @@ Task.delete = (task) => {
     return db.none(sql, task);
 }
 
+/**
+ * Elimina las asignaciones de tarea de la base de datos.
+ * @param {number} task - ID de la tarea cuyas asignaciones se eliminarán.
+ * @returns {Promise} Promesa que indica la finalización de la operación.
+ */
 Task.deleteAssignments = (task) => {
     const sql = `
         DELETE 
@@ -114,6 +158,11 @@ Task.deleteAssignments = (task) => {
     return db.none(sql, task);
 }
 
+/**
+ * Elimina el seguimiento de cambios de una tarea de la base de datos.
+ * @param {number} task - ID de la tarea cuyo seguimiento de cambios se eliminará.
+ * @returns {Promise} Promesa que indica la finalización de la operación.
+ */
 Task.deleteChangeTracking = (task) => {
     const sql = `
         DELETE 
@@ -123,8 +172,12 @@ Task.deleteChangeTracking = (task) => {
     return db.none(sql, task);
 }
 
-
-
+/**
+ * Asigna una tarea a un usuario en la base de datos.
+ * @param {number} task - ID de la tarea a asignar.
+ * @param {number} user - ID del usuario al que se asignará la tarea.
+ * @returns {Promise} Promesa que se resuelve con el ID de la asignación de tarea creada.
+ */
 Task.assignment = async (task, user) => {
     const sql = `
         INSERT INTO
@@ -137,6 +190,12 @@ Task.assignment = async (task, user) => {
     return db.oneOrNone(sql, [task, user]);
 }
 
+/**
+ * Actualiza el estado de una tarea en la base de datos.
+ * @param {number} task - ID de la tarea cuyo estado se actualizará.
+ * @param {number} user - ID del usuario que realiza el cambio de estado.
+ * @returns {Promise} Promesa que se resuelve con el ID de la tarea cuyo estado se actualizó.
+ */
 Task.updateState = async(task, user) => {
     const sql=`
         INSERT INTO
@@ -154,8 +213,12 @@ Task.updateState = async(task, user) => {
     ]);
 }
 
-
-
+/**
+ * Actualiza el estado de una tarea en la base de datos.
+ * @param {number} task_id - ID de la tarea cuyo estado se actualizará.
+ * @param {number} state_id - ID del nuevo estado de la tarea.
+ * @returns {Promise} Promesa que se resuelve con el ID de la tarea cuyo estado se actualizó.
+ */
 Task.updateTask = async(task_id, state_id) => {
     const sql=`
         UPDATE 
@@ -169,6 +232,11 @@ Task.updateTask = async(task_id, state_id) => {
     ]);
 }
 
+/**
+ * Busca tareas no finalizadas asociadas a un historial de usuario en la base de datos.
+ * @param {number} user_history - ID del historial de usuario.
+ * @returns {Promise} Promesa que se resuelve con un array de objetos que representan las tareas no finalizadas encontradas.
+ */
 Task.notFinalized = async(user_history) => {
     const sql = `
         SELECT 
@@ -182,6 +250,5 @@ Task.notFinalized = async(user_history) => {
 
     return db.manyOrNone(sql, user_history);
 }
-
 
 module.exports = Task;

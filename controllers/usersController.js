@@ -1,9 +1,19 @@
-const User = require('../models/user')
+const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../config/keys');
 
+/**
+ * Controlador que gestiona las operaciones relacionadas con los usuarios.
+ */
 module.exports = {
+    /**
+     * Obtiene todos los usuarios.
+     * @param {Object} req - Objeto de solicitud HTTP.
+     * @param {Object} res - Objeto de respuesta HTTP.
+     * @param {Function} next - Función para pasar el control al siguiente manejador de middleware.
+     * @returns {Object} Respuesta HTTP con los usuarios encontrados.
+     */
     async getAll(req, res, next) {
         try {
             const data = await User.getAll(); 
@@ -18,6 +28,13 @@ module.exports = {
         }
     },
 
+    /**
+     * Registra un nuevo usuario.
+     * @param {Object} req - Objeto de solicitud HTTP que contiene los datos del usuario a registrar.
+     * @param {Object} res - Objeto de respuesta HTTP.
+     * @param {Function} next - Función para pasar el control al siguiente manejador de middleware.
+     * @returns {Object} Respuesta HTTP con el resultado del registro.
+     */
     async register(req, res, next) {
         try {
             const user = req.body;
@@ -26,7 +43,7 @@ module.exports = {
             const token = jwt.sign({id: data.id, email: user.email},
                 keys.secretOrKey, {
                 //expiresIn
-            })
+            });
             
 
             const myData = {
@@ -39,42 +56,43 @@ module.exports = {
 
             return res.status(201).json({
                 success: true,
-                message: 'El registro se realizo correctamente!!',
+                message: 'El registro se realizó correctamente!!',
                 data: myData
             });
         } catch (error) {
             console.log(`Error: ${error}`);
             if (error.code === '23505') {
                 if (error.constraint === 'users_user_name_key') {
-                    // Si el error es debido a que el nombre de usuario ya existe, devuelve un mensaje al usuario
                     return res.status(400).json({ success: false, message: 'El nombre de usuario ya está en uso', error:error });
                 } else if (error.constraint === 'users_email_key') {
-                    // Si el error es debido a que el correo electrónico ya existe, devuelve un mensaje al usuario
                     return res.status(400).json({ success: false, message: 'El correo electrónico ya está en uso', error:error });
                 }
             } else {
-                // Si el error no se debe a la violación de la restricción de unicidad, devuelve un mensaje genérico de error
                 console.error('Error al crear el usuario:', error);
                 return res.status(500).json({ success: false, message: 'Hubo un error al registrar al usuario', error: error });
             }
         }
     },
 
+    /**
+     * Autentica a un usuario.
+     * @param {Object} req - Objeto de solicitud HTTP que contiene los datos de inicio de sesión del usuario.
+     * @param {Object} res - Objeto de respuesta HTTP.
+     * @param {Function} next - Función para pasar el control al siguiente manejador de middleware.
+     * @returns {Object} Respuesta HTTP con el resultado de la autenticación.
+     */
     async login(req, res, next) {
         try {
-            
             const email = req.body.email;
             const password = req.body.password;
 
-
             const myUser = await User.findByEmail(email);
-            console.log(req.body)
 
-            if(!myUser) {
+            if (!myUser) {
                 return res.status(401).json({
                     success: false,
                     message: 'Las credenciales son incorrectas'
-                })
+                });
             }
 
             if (myUser) {
@@ -84,8 +102,7 @@ module.exports = {
                     const token = jwt.sign({id: myUser.id, email: myUser.email},
                         keys.secretOrKey, {
                         //expiresIn
-                    })
-                    
+                    });
 
                     const data = {
                         id: myUser.id,
@@ -103,7 +120,6 @@ module.exports = {
                         data: data
                     });
                 }
-            
             } else {
                 return res.status(401).json({
                     success: false,

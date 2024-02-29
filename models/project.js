@@ -1,6 +1,5 @@
 const db = require('../config/config');
 
-// Objeto Project que contiene métodos para interactuar con la tabla projects en la base de datos
 const Project = {};
 
 /**

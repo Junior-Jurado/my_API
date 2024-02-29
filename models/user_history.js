@@ -2,8 +2,13 @@ const db = require('../config/config');
 
 const UserHistory = {};
 
+/**
+ * Crea un nuevo historial de usuario en la base de datos.
+ * @param {Object} UserHistory - Objeto que contiene los datos del historial de usuario a crear.
+ * @param {Object} Project - Objeto que contiene los datos del proyecto asociado al historial de usuario.
+ * @returns {Promise} Promesa que se resuelve con el ID del historial de usuario creado.
+ */
 UserHistory.create = async (UserHistory, Project) => {
-
     const sql = `
     INSERT INTO
         user_histories(
@@ -24,6 +29,11 @@ UserHistory.create = async (UserHistory, Project) => {
     ]);
 }
 
+/**
+ * Busca un historial de usuario por su ID en la base de datos.
+ * @param {number} id - ID del historial de usuario a buscar.
+ * @returns {Promise} Promesa que se resuelve con los datos del historial de usuario encontrado, o null si no se encuentra.
+ */
 UserHistory.search = async (id) => {
     const sql = `
         SELECT * 
@@ -33,6 +43,12 @@ UserHistory.search = async (id) => {
     return db.oneOrNone(sql, id);
 }
 
+/**
+ * Actualiza un historial de usuario en la base de datos.
+ * @param {Object} UserHistory - Objeto que contiene los datos del historial de usuario a actualizar.
+ * @param {number} state - Estado actualizado del historial de usuario.
+ * @returns {Promise} Promesa que indica la finalización de la operación.
+ */
 UserHistory.update = async (UserHistory, state) => {
     const sql = `
         UPDATE
@@ -53,6 +69,12 @@ UserHistory.update = async (UserHistory, state) => {
     ]);
 }
 
+/**
+ * Actualiza el estado de un historial de usuario en la base de datos.
+ * @param {number} id - ID del historial de usuario a actualizar.
+ * @param {number} user - ID del usuario que realiza el cambio de estado.
+ * @returns {Promise} Promesa que se resuelve con el ID del cambio de estado registrado.
+ */
 UserHistory.updateState = async (id, user) => {
     const sql = `
         INSERT INTO
@@ -71,6 +93,11 @@ UserHistory.updateState = async (id, user) => {
     ]);
 }
 
+/**
+ * Elimina un historial de usuario de la base de datos.
+ * @param {number} id - ID del historial de usuario a eliminar.
+ * @returns {Promise} Promesa que indica la finalización de la operación.
+ */
 UserHistory.delete = async (id) => {
     const sql = `
         DELETE 
@@ -80,6 +107,11 @@ UserHistory.delete = async (id) => {
     return db.none(sql, id);
 }
 
+/**
+ * Elimina el seguimiento de cambios de un historial de usuario de la base de datos.
+ * @param {number} id - ID del historial de usuario cuyo seguimiento de cambios se eliminará.
+ * @returns {Promise} Promesa que indica la finalización de la operación.
+ */
 UserHistory.deleteChangeTracking = (id) => {
     const sql = `
         DELETE 
@@ -88,6 +120,5 @@ UserHistory.deleteChangeTracking = (id) => {
     `;
     return db.none(sql, id);
 }
-
 
 module.exports = UserHistory;
