@@ -36,6 +36,18 @@ Task.search = async (id) => {
     return db.oneOrNone(sql, id);
 }
 
+Task.searchHistory = async (id) => {
+    const sql = `
+        SELECT 
+            * 
+        FROM 
+            tasks
+        WHERE
+            user_history_id = $1
+    `;
+    return db.manyOrNone(sql, id);
+}
+
 Task.update = async(Task) => {
     const sql = `
         UPDATE tasks
@@ -102,6 +114,16 @@ Task.deleteAssignments = (task) => {
     return db.none(sql, task);
 }
 
+Task.deleteChangeTracking = (task) => {
+    const sql = `
+        DELETE 
+        FROM change_tracking_task 
+        WHERE task_id = $1 
+    `;
+    return db.none(sql, task);
+}
+
+
 
 Task.assignment = async (task, user) => {
     const sql = `
@@ -132,6 +154,8 @@ Task.updateState = async(task, user) => {
     ]);
 }
 
+
+
 Task.updateTask = async(task_id, state_id) => {
     const sql=`
         UPDATE 
@@ -144,5 +168,20 @@ Task.updateTask = async(task_id, state_id) => {
         state_id
     ]);
 }
+
+Task.notFinalized = async(user_history) => {
+    const sql = `
+        SELECT 
+            * 
+        FROM 
+            tasks
+        WHERE 
+            state_id <> 3 
+            AND user_history_id = $1
+    `;
+
+    return db.manyOrNone(sql, user_history);
+}
+
 
 module.exports = Task;
