@@ -9,4 +9,6 @@ passport-jwt
 passport
 jsonwebtoken
 
+mocha
+supertest
 -D jest supertest

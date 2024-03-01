@@ -15,7 +15,7 @@ module.exports = {
     async create(req, res, next) {
         try {
             const project = req.body;
-            const id = project.create_by_id;
+            const id = project.created_by_id;
             const user = await User.findByIdPerRol(id);
 
             if (user['rol'] == 1) {
