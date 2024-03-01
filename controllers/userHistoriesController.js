@@ -41,7 +41,7 @@ module.exports = {
                 } else {
                     return res.status(401).json({
                         success: false,
-                        message: 'No se puede crear la historia de Usuario, ya que eres un gerente!'
+                        message: 'No se puede crear la historia de Usuario, ya que NO eres un gerente!'
                     }); 
                 }
             } else {
@@ -76,7 +76,7 @@ module.exports = {
             if (user == user_history.created_by_id) {
                 if (data.state_id != user_history.state_id) {
                     if (data.state_id == 3 && task == null && user_history != null) {
-                        await UserHistory.update(user_history, data.state_id);
+                        await UserHistory.update(data);
                         id = await UserHistory.updateState(user_history.id, user_history.created_by);
                         return res.status(201).json({
                             success: true,
@@ -84,7 +84,7 @@ module.exports = {
                             data: id
                         });
                     } else if (user_history != null && data.state_id != 3) {
-                        await UserHistory.update(user_history, data.state_id);
+                        await UserHistory.update(data);
                         id = await UserHistory.updateState(user_history.id, user_history.created_by_id);
                         return res.status(201).json({
                             success: true,

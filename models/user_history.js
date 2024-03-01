@@ -49,7 +49,7 @@ UserHistory.search = async (id) => {
  * @param {number} state - Estado actualizado del historial de usuario.
  * @returns {Promise} Promesa que indica la finalización de la operación.
  */
-UserHistory.update = async (UserHistory, state) => {
+UserHistory.update = async (UserHistory) => {
     const sql = `
         UPDATE
             user_histories
@@ -65,7 +65,7 @@ UserHistory.update = async (UserHistory, state) => {
         UserHistory.id,
         UserHistory.description,
         UserHistory.criteria,
-        state
+        UserHistory.state_id
     ]);
 }
 
