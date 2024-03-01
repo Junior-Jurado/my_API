@@ -11,11 +11,12 @@ types.setTypeParser(1114, function(stringValue){
 });
 
 const databaseConfig = {
-    'host': '127.0.0.1',
+    'host': 'ec2-44-213-151-75.compute-1.amazonaws.com',
     'port': 5432,
-    'database':'api_db',
-    'user': 'postgres',
-    'password': 'gj1049432023'
+    'database':'d3govvltg5de2a',
+    'user': 'mkqffxyekrbckg',
+    'password': '12cd12c4738f6bd9d8b2a20c8d29470b88db4068e38fb0439d3dc6d03e10d992',
+    'ssl': { rejectUnathorized: false }
 };
 
 const db = pgp(databaseConfig);

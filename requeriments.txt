@@ -8,3 +8,5 @@ bcryptjs
 passport-jwt
 passport
 jsonwebtoken
+
+-D jest supertest

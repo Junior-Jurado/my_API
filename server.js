@@ -37,8 +37,12 @@ projects(app);
 userHistories(app);
 tasks(app);
 
-server.listen(3000, '10.31.14.139' || 'localhost', function() {
-    console.log("API projects " + process.pid + " iniciada ...\nEn el puerto " + port)
+// server.listen(3000, '10.31.14.139' || 'localhost', function() {
+//     console.log("API projects " + process.pid + " iniciada ...\nEn el puerto " + port)
+// });
+
+server.listen(port, function() {
+    console.log("Listening on port " +  port)
 });
 
 // ERROR HANDLER
