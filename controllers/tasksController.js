@@ -150,6 +150,7 @@ module.exports = {
 
             if (user != null || manager != null) {
                 await Task.deleteAssignments(data.task);
+                await Task.deleteChangeTracking(data.task);
                 await Task.delete(data.task);
                 return res.status(201).json({
                     success: true,
