@@ -8,5 +8,4 @@ module.exports = (app) => {
     app.post('/api/users/create', UsersController.register);
     app.post('/api/users/login', UsersController.login);
 
-    //app.post('/api/users/create', passport.authenticate('jwt', {session: false}). UsersController.register);
 }

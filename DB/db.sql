@@ -14,7 +14,7 @@ CREATE TABLE users(
 	session_token VARCHAR(255) NULL,
 	created_at TIMESTAMP(0) NOT NULL,
 	updated_at TIMESTAMP(0) NOT NULL,
-    FOREIGN KEY (rol) REFERENCES roles(id) ON UPDATE CASCADE
+    FOREIGN KEY (rol) REFERENCES roles(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS states CASCADE;
@@ -31,8 +31,8 @@ CREATE TABLE projects(
     start_date DATE,
     state_id BIGSERIAL,
     created_by_id BIGSERIAL,
-    FOREIGN KEY (created_by_id) REFERENCES users(id) ON UPDATE CASCADE,
-    FOREIGN KEY (state_id) REFERENCES states(id) ON UPDATE CASCADE
+    FOREIGN KEY (created_by_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (state_id) REFERENCES states(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS project_assigment CASCADE;
@@ -40,8 +40,8 @@ CREATE TABLE project_assigment(
     id BIGSERIAL PRIMARY KEY,
     user_id BIGSERIAL NOT NULL,
     project_id BIGSERIAL NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE,
-    FOREIGN KEY (project_id) REFERENCES projects(id) ON UPDATE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
@@ -53,9 +53,9 @@ CREATE TABLE user_histories(
     project_id BIGSERIAL NOT NULL,
     state_id BIGSERIAL NOT NULL,
     created_by_id BIGSERIAL NOT NULL,
-    FOREIGN KEY (project_id) REFERENCES projects(id) ON UPDATE CASCADE,
-    FOREIGN KEY (state_id) REFERENCES states(id) ON UPDATE CASCADE,
-    FOREIGN KEY (created_by_id) REFERENCES users(id) ON UPDATE CASCADE
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (state_id) REFERENCES states(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (created_by_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS user_histories_assignment CASCADE;
@@ -63,8 +63,8 @@ CREATE TABLE user_histories_assignment(
     id BIGSERIAL PRIMARY KEY,
     user_history_id BIGSERIAL NOT NULL,
     user_id BIGSERIAL,
-    FOREIGN KEY (user_history_id) REFERENCES user_histories(id) ON UPDATE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE
+    FOREIGN KEY (user_history_id) REFERENCES user_histories(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS tasks CASCADE;
@@ -75,9 +75,9 @@ CREATE TABLE tasks(
     user_history_id BIGSERIAL NOT NULL,
     state_id BIGSERIAL NOT NULL,
     create_by_id BIGSERIAL NOT NULL,
-    FOREIGN KEY (state_id) REFERENCES states(id) ON UPDATE CASCADE,
-    FOREIGN KEY (user_history_id) REFERENCES user_histories(id) ON UPDATE CASCADE,
-    FOREIGN KEY (create_by_id) REFERENCES users(id)
+    FOREIGN KEY (state_id) REFERENCES states(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (user_history_id) REFERENCES user_histories(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (create_by_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
@@ -86,8 +86,8 @@ CREATE TABLE task_assignment(
     id BIGSERIAL PRIMARY KEY,
     task_id BIGSERIAL NOT NULL,
     user_id BIGSERIAL NOT NULL,
-    FOREIGN KEY (task_id) REFERENCES tasks(id) ON UPDATE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE
+    FOREIGN KEY (task_id) REFERENCES tasks(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS change_tracking_task CASCADE;
@@ -96,8 +96,8 @@ CREATE TABLE change_tracking_task(
     change_date TIMESTAMP(0) NOT NULL,
     task_id BIGSERIAL NOT NULL,
     changed_by_id BIGSERIAL NOT NULL,
-    FOREIGN KEY (changed_by_id) REFERENCES users(id) ON UPDATE CASCADE,
-    FOREIGN KEY (task_id) REFERENCES tasks(id) ON UPDATE CASCADE
+    FOREIGN KEY (changed_by_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (task_id) REFERENCES tasks(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS change_tracking_history CASCADE;
@@ -106,8 +106,8 @@ CREATE TABLE change_tracking_history(
     change_date TIMESTAMP(0) NOT NULL,
     user_histoy_id BIGSERIAL NOT NULL,
     changed_by_id BIGSERIAL NOT NULL,
-    FOREIGN KEY (changed_by_id) REFERENCES users(id) ON UPDATE CASCADE,
-    FOREIGN KEY (user_histoy_id) REFERENCES user_histories(id) ON UPDATE CASCADE
+    FOREIGN KEY (changed_by_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (user_histoy_id) REFERENCES user_histories(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 INSERT INTO roles(rol) VALUES('Gerente');
@@ -119,10 +119,10 @@ INSERT INTO states(estate) VALUES('En desarrollo');
 INSERT INTO states(estate) VALUES('Finalizada');
 
 
-INSERT INTO usuarios(
-	usuario,
+INSERT INTO users(
+	user_name,
 	email,
-	contrasena,
+	password,
 	created_at,
 	updated_at,
 	rol

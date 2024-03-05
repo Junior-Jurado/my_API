@@ -9,6 +9,8 @@ passport-jwt
 passport
 jsonwebtoken
 
+
+request --save-dev mocha
 mocha
 supertest
 -D jest supertest
