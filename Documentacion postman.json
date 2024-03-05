@@ -1,0 +1,573 @@
+{
+	"info": {
+		"_postman_id": "d3d9b178-0695-4a3f-82a9-6f1653bdc888",
+		"name": "API Projects",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31711784"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_name\": \"Ludwig Alvarado\",\r\n    \"email\": \"ludbitch@gmail.com\",\r\n    \"password\": \"123\",\r\n    \"rol\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://project-manager-api-01efc442a29d.herokuapp.com/api/users/create",
+							"protocol": "https",
+							"host": [
+								"project-manager-api-01efc442a29d",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"juniorjurado2004@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://project-manager-api-01efc442a29d.herokuapp.com/api/users/login",
+							"protocol": "https",
+							"host": [
+								"project-manager-api-01efc442a29d",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://project-manager-api-01efc442a29d.herokuapp.com/api/users/getall",
+							"protocol": "https",
+							"host": [
+								"project-manager-api-01efc442a29d",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"getall"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Trabajar con el modelo User"
+		},
+		{
+			"name": "Project",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJlbWFpbCI6Imp1bmlvcmp1cmFkbzIwMDRAZ21haWwuY29tIiwiaWF0IjoxNzA5MjU1MDcyfQ.zl1_ZYSvVH68upe9EElmbwcwXljCktBLvYqLuMk8e6M",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"created_by_id\": 2,\r\n    \"name\": \"Proyecto X\",\r\n    \"description\": \"Es un proyecto para fomentar el rendimiento de los desarrolladores\",\r\n    \"start_date\": \"03/01/2024\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://project-manager-api-01efc442a29d.herokuapp.com/api/projects/create",
+							"protocol": "https",
+							"host": [
+								"project-manager-api-01efc442a29d",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"projects",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View Projects Assigment",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJlbWFpbCI6Imp1bmlvcmp1cmFkbzIwMDRAZ21haWwuY29tIiwiaWF0IjoxNzA5MjU1MDcyfQ.zl1_ZYSvVH68upe9EElmbwcwXljCktBLvYqLuMk8e6M",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://project-manager-api-01efc442a29d.herokuapp.com/api/projects/viewProjects/3",
+							"protocol": "https",
+							"host": [
+								"project-manager-api-01efc442a29d",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"projects",
+								"viewProjects",
+								"3"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Developer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJlbWFpbCI6Imp1bmlvcmp1cmFkbzIwMDRAZ21haWwuY29tIiwiaWF0IjoxNzA5MjU1MDcyfQ.zl1_ZYSvVH68upe9EElmbwcwXljCktBLvYqLuMk8e6M",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"project_id\": 2,\r\n    \"user_id\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://project-manager-api-01efc442a29d.herokuapp.com/api/projects/addDev",
+							"protocol": "https",
+							"host": [
+								"project-manager-api-01efc442a29d",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"projects",
+								"addDev"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Developer",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJlbWFpbCI6Imp1bmlvcmp1cmFkbzIwMDRAZ21haWwuY29tIiwiaWF0IjoxNzA5MjU1MDcyfQ.zl1_ZYSvVH68upe9EElmbwcwXljCktBLvYqLuMk8e6M",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"project_id\": 2,\r\n    \"user_id\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://project-manager-api-01efc442a29d.herokuapp.com/api/projects/delDev",
+							"protocol": "https",
+							"host": [
+								"project-manager-api-01efc442a29d",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"projects",
+								"delDev"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Trabajar con el modelo Project"
+		},
+		{
+			"name": "User History",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJlbWFpbCI6Imp1bmlvcmp1cmFkbzIwMDRAZ21haWwuY29tIiwiaWF0IjoxNzA5MjU1MDcyfQ.zl1_ZYSvVH68upe9EElmbwcwXljCktBLvYqLuMk8e6M",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"project_id\": 2,\r\n    \"description\": \"Los usuarios no tiene dinero para comprar alcohol\",\r\n    \"criteria\": \"Conseguir dinero para tomar bien\",\r\n    \"created_by_id\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://project-manager-api-01efc442a29d.herokuapp.com/api/userHistory/create",
+							"protocol": "https",
+							"host": [
+								"project-manager-api-01efc442a29d",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"userHistory",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJlbWFpbCI6Imp1bmlvcmp1cmFkbzIwMDRAZ21haWwuY29tIiwiaWF0IjoxNzA5MjU1MDcyfQ.zl1_ZYSvVH68upe9EElmbwcwXljCktBLvYqLuMk8e6M",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"state_id\": 2,\r\n    \"description\": \"Thi is a new description\",\r\n    \"criteria\": \"Eu nao bebo\",\r\n    \"user\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://project-manager-api-01efc442a29d.herokuapp.com/api/userHistory/update",
+							"protocol": "https",
+							"host": [
+								"project-manager-api-01efc442a29d",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"userHistory",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJlbWFpbCI6Imp1bmlvcmp1cmFkbzIwMDRAZ21haWwuY29tIiwiaWF0IjoxNzA5MjU1MDcyfQ.zl1_ZYSvVH68upe9EElmbwcwXljCktBLvYqLuMk8e6M",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 3,\r\n    \"user\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://project-manager-api-01efc442a29d.herokuapp.com/api/userHistory/delete",
+							"protocol": "https",
+							"host": [
+								"project-manager-api-01efc442a29d",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"userHistory",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Trabajar con el modelo User History"
+		},
+		{
+			"name": "Task",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJlbWFpbCI6Imp1bmlvcmp1cmFkbzIwMDRAZ21haWwuY29tIiwiaWF0IjoxNzA5MjU1MDcyfQ.zl1_ZYSvVH68upe9EElmbwcwXljCktBLvYqLuMk8e6M",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_history_id\": 2,\r\n    \"name\": \"Ten tu propia empresa\",\r\n    \"description\": \"Consolidar los estudios en algo tangible\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://project-manager-api-01efc442a29d.herokuapp.com/api/task/create",
+							"protocol": "https",
+							"host": [
+								"project-manager-api-01efc442a29d",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"task",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJlbWFpbCI6Imp1bmlvcmp1cmFkbzIwMDRAZ21haWwuY29tIiwiaWF0IjoxNzA5MjU1MDcyfQ.zl1_ZYSvVH68upe9EElmbwcwXljCktBLvYqLuMk8e6M",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"task\": 2,\r\n    \"user\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://project-manager-api-01efc442a29d.herokuapp.com/api/task/delete",
+							"protocol": "https",
+							"host": [
+								"project-manager-api-01efc442a29d",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"task",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJlbWFpbCI6Imp1bmlvcmp1cmFkbzIwMDRAZ21haWwuY29tIiwiaWF0IjoxNzA5MjU1MDcyfQ.zl1_ZYSvVH68upe9EElmbwcwXljCktBLvYqLuMk8e6M",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 2,\r\n    \"user\": 4,\r\n    \"state\": 3,\r\n    \"name\": \"New task\",\r\n    \"description\": \"New description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://project-manager-api-01efc442a29d.herokuapp.com/api/task/update",
+							"protocol": "https",
+							"host": [
+								"project-manager-api-01efc442a29d",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"task",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update State",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJlbWFpbCI6Imp1bmlvcmp1cmFkbzIwMDRAZ21haWwuY29tIiwiaWF0IjoxNzA5MjU1MDcyfQ.zl1_ZYSvVH68upe9EElmbwcwXljCktBLvYqLuMk8e6M",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"task\": 2,\r\n    \"user\": 3,\r\n    \"state\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://project-manager-api-01efc442a29d.herokuapp.com/api/task/updateState",
+							"protocol": "https",
+							"host": [
+								"project-manager-api-01efc442a29d",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"task",
+								"updateState"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assigment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJlbWFpbCI6Imp1bmlvcmp1cmFkbzIwMDRAZ21haWwuY29tIiwiaWF0IjoxNzA5MjU1MDcyfQ.zl1_ZYSvVH68upe9EElmbwcwXljCktBLvYqLuMk8e6M",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"task\": 2,\r\n    \"user\": 2,\r\n    \"dev\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://project-manager-api-01efc442a29d.herokuapp.com/api/task/assignment",
+							"protocol": "https",
+							"host": [
+								"project-manager-api-01efc442a29d",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"task",
+								"assignment"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Trabajar con el modelo Task"
+		}
+	]
+}
